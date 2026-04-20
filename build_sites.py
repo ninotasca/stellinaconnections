@@ -156,20 +156,26 @@ GALLERY = [
 ]
 
 
-def nav(current: str):
+def rel_prefix(slug: str):
+    return './' if not slug else '../'
+
+
+def nav(current: str, prefix: str):
     items = [('Home', ''), ('About', 'about/'), ('Services', 'services/'), ('Process', 'process/'), ('FAQ', 'faq/'), ('Contact', 'contact/')]
     out = []
     for label, href in items:
         cls = 'active' if href == current else ''
-        out.append(f'<a class="{cls}" href="/{href}">{label}</a>')
+        target = f'{prefix}{href}'
+        out.append(f'<a class="{cls}" href="{target}">{label}</a>')
     return ''.join(out)
 
 
-def footer():
-    return '''<footer class="site-footer"><div class="container footer-grid"><div><img class="footer-logo" src="/%s" alt="Stellina Connections logo" /><p>Your trusted partner for meetings, incentives, and events worldwide.</p></div><div><h4>Connect</h4><p><a href="mailto:raffy@stellinaconnections.com">raffy@stellinaconnections.com</a><br><a href="https://www.linkedin.com/in/raffaellatasca/" target="_blank" rel="noreferrer">LinkedIn</a></p></div></div></footer>''' % PRIMARY_LOGO_LIGHT
+def footer(prefix: str):
+    return '''<footer class="site-footer"><div class="container footer-grid"><div><img class="footer-logo" src="%s%s" alt="Stellina Connections logo" /><p>Your trusted partner for meetings, incentives, and events worldwide.</p></div><div><h4>Connect</h4><p><a href="mailto:raffy@stellinaconnections.com">raffy@stellinaconnections.com</a><br><a href="https://www.linkedin.com/in/raffaellatasca/" target="_blank" rel="noreferrer">LinkedIn</a></p></div></div></footer>''' % (prefix, PRIMARY_LOGO_LIGHT)
 
 
 def page_shell(version_name: str, page_key: str, page: dict, inner: str, css_name: str, logo: str, theme_class: str):
+    prefix = rel_prefix(page['slug'])
     return f'''<!doctype html>
 <html lang="en">
 <head>
@@ -177,21 +183,21 @@ def page_shell(version_name: str, page_key: str, page: dict, inner: str, css_nam
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{page['title']} | Stellina Connections</title>
   <meta name="description" content="Stellina Connections helps clients source, compare, and negotiate premier hotels and resorts for meetings, incentives, and executive retreats." />
-  <link rel="icon" href="/{ASSET}/2025/11/cropped-favicon-32x32.jpg" />
+  <link rel="icon" href="{prefix}{ASSET}/2025/11/cropped-favicon-32x32.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/{css_name}" />
+  <link rel="stylesheet" href="{prefix}{css_name}" />
 </head>
 <body class="{theme_class}">
   <header class="site-header">
     <div class="container nav-wrap">
-      <a href="/" class="brand"><img src="/{logo}" alt="Stellina Connections" /></a>
-      <nav>{nav(page['slug'])}</nav>
+      <a href="{prefix}" class="brand"><img src="{prefix}{logo}" alt="Stellina Connections" /></a>
+      <nav>{nav(page['slug'], prefix)}</nav>
     </div>
   </header>
   {inner}
-  {footer()}
+  {footer(prefix)}
 </body>
 </html>'''
 
@@ -227,11 +233,13 @@ def render_sections(page_key: str, page: dict, variant: str):
         body.append('</div></section>')
         blocks.append(''.join(body))
     if page_key == 'index':
-        blocks.append('<section class="section alt"><div class="container"><div class="section-head"><p class="eyebrow">Partners & destinations</p><h2>Built for the moments that matter.</h2></div><div class="image-row">' + ''.join(f'<img src="/{img}" alt="Hotel destination photography" />' for img in GALLERY) + '</div></div></section>')
+        prefix = rel_prefix(page['slug'])
+        blocks.append('<section class="section alt"><div class="container"><div class="section-head"><p class="eyebrow">Partners & destinations</p><h2>Built for the moments that matter.</h2></div><div class="image-row">' + ''.join(f'<img src="{prefix}{img}" alt="Hotel destination photography" />' for img in GALLERY) + '</div></div></section>')
     return ''.join(blocks)
 
 
 def hero(page_key: str, page: dict, variant: str):
+    prefix = rel_prefix(page['slug'])
     image = HERO_A if variant == 'a' else HERO_B
     if page_key == 'about':
         image = PORTRAIT
@@ -243,9 +251,9 @@ def hero(page_key: str, page: dict, variant: str):
           <p class="eyebrow">{page['hero_kicker']}</p>
           <h1>{page['hero_title']}</h1>
           <p class="lede">{page['hero_text']}</p>
-          <div class="hero-actions"><a class="button primary" href="/{cta[1]}">{cta[0]}</a><a class="button secondary" href="/contact/">Contact Raffy</a></div>
+          <div class="hero-actions"><a class="button primary" href="{prefix}{cta[1]}">{cta[0]}</a><a class="button secondary" href="{prefix}contact/">Contact Raffy</a></div>
         </div>
-        <div class="hero-media"><img src="/{image}" alt="Stellina Connections visual" /></div>
+        <div class="hero-media"><img src="{prefix}{image}" alt="Stellina Connections visual" /></div>
       </div>
     </section>
     {render_sections(page_key, page, variant)}
