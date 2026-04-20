@@ -1,0 +1,90 @@
+/* Mobile QA patch layer for the static replica */
+html, body {
+  overflow-x: hidden;
+}
+
+img, svg, video, iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+.elementor-widget-image img,
+.elementor-widget-image-box img,
+.elementor-image-carousel img,
+.swiper-slide-image {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 1024px) {
+  .elementor-widget-wrap,
+  .elementor-column,
+  .elementor-container,
+  .e-con,
+  .e-con-inner {
+    min-width: 0;
+  }
+
+  .elementor-element {
+    max-width: 100%;
+  }
+
+  .elementor-widget-text-editor,
+  .elementor-heading-title,
+  .elementor-icon-list-text,
+  p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  .elementor-widget-image-carousel .swiper,
+  .elementor-widget-image-carousel .swiper-wrapper,
+  .elementor-widget-image-carousel .swiper-slide {
+    width: 100%;
+  }
+
+  .elementskit-menu-container {
+    max-width: min(92vw, 360px);
+  }
+}
+
+@media (max-width: 767px) {
+  body {
+    font-size: 16px;
+  }
+
+  .elementor-section.elementor-section-boxed > .elementor-container,
+  .e-con-boxed > .e-con-inner,
+  .elementor-container,
+  .e-con-inner {
+    width: min(100%, calc(100vw - 32px)) !important;
+    max-width: min(100%, calc(100vw - 32px)) !important;
+  }
+
+  .elementor-widget-button .elementor-button,
+  .elementor-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .elementor-heading-title {
+    line-height: 1.05;
+  }
+
+  .elementor-widget-image-carousel,
+  .swiper,
+  .swiper-wrapper,
+  .swiper-slide,
+  .swiper-slide-inner {
+    overflow: hidden;
+  }
+
+  .elementor-widget-social-icons .elementor-grid {
+    gap: 12px;
+  }
+
+  .elementor-location-header,
+  .elementor-location-footer {
+    overflow: clip;
+  }
+}
