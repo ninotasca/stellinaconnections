@@ -88,3 +88,9 @@ img, svg, video, iframe {
     overflow: clip;
   }
 }
+/* Keep the homepage hero fully local instead of relying on the WordPress host. */
+.elementor-975 .elementor-element.elementor-element-942d814:not(.elementor-motion-effects-element-type-background),
+.elementor-975 .elementor-element.elementor-element-942d814 > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+  background-image: url("/wp-content/uploads/2025/10/Stellina-site-selection-company-1.jpg");
+}
+
